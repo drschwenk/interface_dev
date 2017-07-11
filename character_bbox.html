@@ -9,25 +9,26 @@
 <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
 <script type='text/javascript' src='https://s3.amazonaws.com/mturk-public/externalHIT_v1.js'></script>
-<script src="bbox_annotator.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/interface_elems/bbox_annotator.js"></script>
 </head>
 <body>
 
-<h1>Character Annotation</h1>
+<h2>Draw boxes around characters in the frame</h2>
+<br>
 <div id="bbox_annotator" style="display:inline-block"></div>
 <div style="display:inline-block;vertical-align:top;">
   <!-- <div>
     <textarea id="annotation_data" name="annotation" rows="30" cols="50" style="font-family:monospace;" readonly></textarea>
   </div> -->
   <script type='text/json' id='input'>
-
 </script>
   <div>
     <input id="annotation_data_mains" name="annotation_data_mains" type="hidden" />
     <input id="annotation_data_others" name="annotation_data_others" type="hidden" />
+
     <br>
-    <input id="reset_button" type="reset" />
-    <input id="other_character" type="button" value="Other Character"/>
+    <!-- <input id="reset_button" type="reset" /> -->
+    <input id="other_character" type="button" value="Select Other Characters"/>
     <form id='results-form' method='post' action='dummy' class='text-center'>
       <input type='hidden' value='' name='assignmentId' id='assignmentId'/>
       <input type='hidden' value='' name='output' id='output'/>
@@ -36,6 +37,10 @@
     </form>
   </div>
 </div>
+<h3> These are the main characters: </h3>
+<img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/interface_elems/mc_row1.png">
+<img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/interface_elems/mc_row2.png">
+
 
 <script>
 var simpleamt = (function() {
@@ -91,8 +96,7 @@ $(document).ready(function() {
   var assignment_id = turkGetParam('assignmentId', "");
   var image_url =  "{{s3_uri_base}}{{image_id}}";
   var image_id = "{{image_id}}";
-  var image_url =  "example.jpg";
-  var image_id = "{{image_id}}";
+  // var image_url =  "example.jpg";
   // Initialize the bounding-box annotator.
   var annotator = new BBoxAnnotator({
     url: image_url,
@@ -134,7 +138,12 @@ $(document).ready(function() {
   $('#submit-btn').prop('disabled', false);
   simpleamt.setupSubmit();
   $('#submit-btn').click(function() {
-    var main_annotations = JSON.parse($('#annotation_data_mains').val());
+    try {
+      var main_annotations = JSON.parse($('#annotation_data_mains').val());
+    }
+      catch(e) {
+        var main_annotations = JSON.parse("[]");
+    }
     try {
       var other_annotations = JSON.parse($('#annotation_data_others').val());
     }
