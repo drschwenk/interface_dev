@@ -18,23 +18,7 @@ The goal of this task is to locate and label all of the characters in this image
 for minor characters labeled in the second step.
 </h4>
 <ul>
-    <b>Step 1: Main characters</b>
   <li>Draw boxes around any and all of the 10 main characters that appear in this image</li>
-  <li>Scroll down to see a list of the 10 main characters if you need a reminder</li>
-  <li>After drawing a box around a main character, label them by choosing their name from the menu</li>
-  <li>The boxes should be drawn tightly, but all parts of a character should be inside it</li>
-  <br>
-  <li>If there are no characters at all in the frame, draw a box anywhere, select "Empty Frame" and submit the HIT</li>
-  <li>If there are minor characters present (characters not in the 10 below), click the "Do Step 2" button and go to Step 2</li>
-  <li>If there were only main characters you should skip Step 2 and submit the HIT now</li>
-  <br>
-  <b>Step 2: Minor characters (Bonus per character)</b>
-  <li>Draw boxes around minor characters in the same way, but instead of choosing the name from a list, you should
-    write a short description of that character</li>
-  <li>This description should be something that identifies the character, for example-
-    "man with bow tie", "construction worker", or "circus performer".</li>
-    <li>There will be a 1 cent bonus for every character you label in this step</li>
-    <li>After labeling all of minor other characters, you can submit the HIT</li>
 </ul>
 <p>
 Here are three examples of the task:
@@ -42,19 +26,11 @@ Here are three examples of the task:
   all main characters...
 </a>
 <br>
-<a href="https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_1/example_only_min.gif">
-  all minor characters...
-</a>
-<br>
-<a href="https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_1/example_minors.gif">
-  main characters and other characters...
-</a>
-<br>
-<a href="https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_1/example_none.gif">
-  and empty frame.
-</a>
-<br>
-</p>
+<h4>
+Draw a box around this character in both frames below:
+</h4>
+  <img id="target_char"
+       src="./test_1.png">
 <br>
 <div id="bbox_annotator" style="display:inline-block"></div>
 <div style="display:inline-block;vertical-align:top;">
@@ -70,7 +46,6 @@ Here are three examples of the task:
 
     <br>
     <!-- <input id="reset_button" type="reset" /> -->
-    <input id="other_character" type="button" value="Do step 2"/>
     <form id='results-form' method='post' action='dummy' class='text-center'>
       <input type='hidden' value='' name='assignmentId' id='assignmentId'/>
       <input type='hidden' value='' name='output' id='output'/>
@@ -143,20 +118,8 @@ $(document).ready(function() {
   var annotator = new BBoxAnnotator({
     url: image_url,
     frame: 'image_frame_1',
-    input_method: inputMethod || "select",
+    input_method: inputMethod || "fixed",
     // input_method: "select",
-    labels: ["Fred",
-             "Barney",
-              "Wilma",
-              "Betty",
-              "Pebbles",
-              "Bamm Bamm",
-              "Dino",
-              "Mr Slate",
-              "Baby Puss",
-              "Hoppy",
-              "Empty Frame"
-              ],
     onchange: function(entries) {
       if (entries.length > 0 &&
           assignment_id != "" &&
@@ -176,36 +139,6 @@ $(document).ready(function() {
   $("#reset_button").click(function(e) {
     annotator.clear_all();
   })
-  $("#other_character").click(function(e) {
-    document.getElementById("mains_1").style.display = 'none';
-    document.getElementById("mains_2").style.display = 'none';
-    document.getElementById("image_frame_1").style.display = 'none';
-    $("#other_character").attr("disabled", "disabled");
-    $("#other_character").attr("value", "Now on Step 2");
-    var new_annotator = new BBoxAnnotator({
-      url: image_url,
-      input_method: "text",
-      frame: 'image_frame_2',
-      onchange: function(entries) {
-        if (entries.length > 0 &&
-            assignment_id != "" &&
-            assignment_id != "ASSIGNMENT_ID_NOT_AVAILABLE") {
-            $('#submit-btn').prop('disabled', false);
-        }
-        else {
-          $("#submitButton").attr("disabled", "disabled");
-
-        }
-        // Input the text area on change. Use "hidden" input tag unless debugging.
-        // <input id="annotation_data" name="annotation_data" type="hidden" />
-        $("#annotation_data_others").val(JSON.stringify(entries))
-      }
-    });
-    for (i = 0; i < annotator.entries.length; i++) {
-      new_annotator.add_entry(annotator.entries[i]);
-    }
-  })
-
   $("#submitButton").attr("disabled", "disabled");
   simpleamt.setupSubmit();
   $('#submit-btn').click(function() {

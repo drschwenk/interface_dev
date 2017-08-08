@@ -38,7 +38,7 @@
           }
           this.label_input = $('<select class="label_input" name="label"></select>');
           this.label_box.append(this.label_input);
-          this.label_input.append($('<option value>choose an item</option>'));
+          this.label_input.append($('<option value>choose from list</option>'));
           ref = options.labels;
           for (i = 0, len = ref.length; i < len; i++) {
             label = ref[i];
@@ -163,6 +163,7 @@
       this.border_width = options.border_width || 2;
       this.show_label = options.show_label || (options.input_method !== "fixed");
       this.image_frame = $('<div class="image_frame"></div>');
+      this.image_frame = $("<div id=" + options.frame + "></div>");
       this.annotator_element.append(this.image_frame);
       image_element = new Image();
       image_element.src = options.url;
@@ -287,8 +288,8 @@
       });
       close_button = $('<div></div>').appendTo(box_element).css({
         "position": "absolute",
-        "top": "-8px",
-        "right": "-8px",
+        "bottom": "5px",
+        "left": "5px",
         "width": "16px",
         "height": "0",
         "padding": "16px 0 0 0",
