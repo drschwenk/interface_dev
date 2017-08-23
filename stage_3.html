@@ -6,9 +6,14 @@
     <!-- end of required libraries -->
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
-    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet'>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
-      textarea {
+      header {font-size: 25px; font-weight: 400; color: #555555;}
+
+      answer {font-size: 20px; font-weight: 400; color: #000000;}
+      char {font-size: 20px; font-weight: 400; color: #0000dd;}
+      timew {font-size: 20px; font-weight: 400; color: #00dd00;}
+      obj {font-size: 20px; font-weight: 400; color: #dd0000;}      textarea {
         margin: 5px 0!important;
         font-size: 16pt!important;
       }
@@ -44,9 +49,9 @@
     </div>
 
     <div class='container-fluid'>
-      <div class='row' style='float: left; width: 50%;'>
+      <div class='row' style="float: left; width: 50%;">
         <div class='col-lg-4 text-center'>
-          <div class='centerBlock'>
+          <div class="centerBlock">
 
           <div id='image-container'>
           </div>
@@ -54,7 +59,7 @@
           <br>
         </div>
       </div>
-      <div class='row' style='float: right; width: 50%;'>
+      <div class='row' style="float: right; width: 50%;">
         <div class='col-lg-4 col-lg-offset-4'>
           <h4>Where are the characters ?</h4>
           <textarea id='setting' class='form-control tb-margin' disabled></textarea>
@@ -69,7 +74,7 @@
       </div>
     </div>
     <hr>
-    {% include 'simpleamt.html' %}
+    {% include "simpleamt.html" %}
 
     <script>
         // Define some default input.
