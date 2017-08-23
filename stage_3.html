@@ -1,0 +1,181 @@
+<html>
+  <head>
+    <title>Examples of animation descriptions</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js'></script>
+    <!-- end of required libraries -->
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet'>
+    <style>
+      textarea {
+        margin: 5px 0!important;
+        font-size: 16pt!important;
+      }
+      #button-div {
+        margin-bottom: 10px;
+      }
+      #counter {
+        margin: 0 10px;
+        font-size: 20pt;
+        font-weight: bold;
+      }
+      img {
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+    <header>Instructions:</header>
+    <ul>
+      <li><answer>Use short and simple, grammatically correct sentences</answer>
+      <li><answer>All characters must be used to answer each question. Use characters names such as <char>Fred</char>, <char>Wilma</char>, <char> Man in a purple dress</char>, etc. exactly as provided.</answer>
+      <li><answer>Use words such as <timew>while</timew>, <timew>then</timew>, <timew>after</timew>, etc to note the order of events.</answer>
+      <li><answer>If characters touch or interact with any objects, such as <obj>car</obj>, <obj>book</obj>, <obj>chair</obj>, etc, they should be mentioned.</answer>
+    </ul>
+    <br>
+    <h4>
+    <a href='https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_3/stage_3_inst.html'>
+      Here's a link to some examples.</a>
+    </h4>
+    <p>&nbsp;<p>
+    </header>
+    </div>
+
+    <div class='container-fluid'>
+      <div class='row' style='float: left; width: 50%;'>
+        <div class='col-lg-4 text-center'>
+          <div class='centerBlock'>
+
+          <div id='image-container'>
+          </div>
+          </div>
+          <br>
+        </div>
+      </div>
+      <div class='row' style='float: right; width: 50%;'>
+        <div class='col-lg-4 col-lg-offset-4'>
+          <h4>Where are the characters ?</h4>
+          <textarea id='setting' class='form-control tb-margin' disabled></textarea>
+          <h4>What happens:</h4>
+          <textarea id='actions' class='form-control tb-margin' disabled></textarea>
+          <br>
+        <h4>Make sure to mention this character when answering:</h4>
+        <img id='target_char'
+             src='{{char_img}}'>
+             <h3>{{char_name}}</h3>
+         </div>
+      </div>
+    </div>
+    <hr>
+    {% include 'simpleamt.html' %}
+
+    <script>
+        // Define some default input.
+        var DEFAULT_INPUT = [
+        '{{image_url}}'
+        ];
+
+        var input = null;
+
+        // Descriptions of images, parallel to input.
+        var descriptions = [];
+
+        // Some variables to track state of the HIT.
+        var idx = 0;
+        var enabled = false;
+
+        function main() {
+          // If this is a HIT on AMT, then replace the default input with the real input.
+          input = simpleamt.getInput(DEFAULT_INPUT);
+
+          // Enable the UI if the HIT is not in preview mode.
+          if (!simpleamt.isPreview()) {
+            enable_hit();
+          }
+
+          // Set up the descriptions.
+          _.each(input, function() { descriptions.push(''); });
+
+          // Preload all images
+          var imgs = [];
+          _.each(input, function(img_url) {
+            var img = new Image();
+            img.onload = function() { console.log('loaded image from ' + img_url); };
+            img.src = img_url;
+          });
+
+          render();
+        }
+
+        // Use the current index to update the image and description
+        function render() {
+          // Set up the image
+          $('#image-container').empty();
+          $('<img>').attr('src', input[idx]).appendTo($('#image-container'));
+
+          // Set up the text area
+          $('#setting').val(descriptions[0]);
+          $('#actions').val(descriptions[1]);
+
+          // Refresh the counter
+          <!--$('.counter-top').text(idx + 1);-->
+          <!--$('.counter-bottom').text(input.length);-->
+
+          // If the UI is enabled, enable or disable the buttons depending on
+          // the index.
+          if (enabled) {
+            <!--var prev_btn = $('#prev-btn');-->
+            <!--var next_btn = $('#next-btn');-->
+            <!--prev_btn.prop('disabled', true);-->
+            <!--next_btn.prop('disabled', true);-->
+            <!--if (idx > 0) {-->
+              <!--prev_btn.prop('disabled', false);-->
+            <!--}-->
+            <!--if (idx < input.length - 1) next_btn.prop('disabled', false);-->
+          }
+        }
+
+        <!--// Update the index, and save the text in the text area.-->
+        <!--function set_idx(new_idx) {-->
+          <!--if (new_idx < 0 || new_idx >= input.length) return;-->
+          <!--descriptions[idx] = $('#characters').val();-->
+          <!--descriptions[idx] = $('#setting').val();-->
+
+          <!--idx = new_idx;-->
+          <!--render();-->
+        <!--}-->
+
+        // Enable the UI.
+        function enable_hit() {
+          enabled = true;
+
+          // Enable components
+          <!--$('#next-btn').click(function() { set_idx(idx + 1) });-->
+          <!--$('#prev-btn').click(function() { set_idx(idx - 1) });-->
+          $('#setting').prop('disabled', false);
+          $('#actions').prop('disabled', false);
+          $('#submit-btn').prop('disabled', false);
+
+          // Set up submit handler.
+          simpleamt.setupSubmit();
+          $('#submit-btn').click(function() {
+            descriptions[0] = $('#setting').val();
+            descriptions[1] = $('#actions').val();
+            console.log(descriptions);
+            if (_.any(descriptions, function(d) { return d.length < 0; })) {
+              alert('Descriptions not long enough. Correct before submitting.');
+              return false;
+            }
+            var output = _.map(_.zip(input, descriptions), function(x) {
+              return {'image_url': x[0], 'description': x[1]};
+            });
+            console.log(output);
+            simpleamt.setOutput(output);
+          });
+        }
+        main();
+    </script>
+  </body>
+</html>
