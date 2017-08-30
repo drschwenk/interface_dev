@@ -1,6 +1,6 @@
 <html>
   <head>
-  <title>Watch the animation and answer the two questions listed below.</title>
+    <title>Examples of animation descriptions</title>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js'></script>
     <!-- end of required libraries -->
@@ -8,22 +8,23 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet'>
     <style>
-      header {font-size: 25px; font-weight: 400; color: #555555;}
-   	  badheader {font-size: 22px; font-weight: 400; color: #ff0000;}
-	  answer {font-size: 20px; font-weight: 400; color: #000000;}
-	  badanswer {font-size: 20px; font-weight: 400; color: #ff0000;}
-	  goodanswer {font-size: 20px; font-weight: 400; color: #00dd00;}
-	  char {font-size: 20px; font-weight: 400; color: #0000dd;}
-	  timew {font-size: 20px; font-weight: 400; color: #00ddff;}
-	  obj {font-size: 20px; font-weight: 400; color: #ff00dd;}
-      answer {font-size: 20px; font-weight: 400; color: #000000;}
-      char {font-size: 20px; font-weight: 400; color: #0000dd;}
-      timew {font-size: 20px; font-weight: 400; color: #00dd00;}
-      obj {font-size: 20px; font-weight: 400; color: #dd0000;}      textarea {
-        margin: 5px 0!important;
-        font-size: 14pt!important;
-		 width: 400px!important;
- 		 height: 200px!important;
+    htitle {font-size: 25px; font-weight: 400; color: #dd0000;}
+    header {font-size: 22px; font-weight: 400; color: #555555;}
+    note {font-size: 22px; font-weight: 400; color: #dd0000;}
+    answer {font-size: 20px; font-weight: 400; color: #000000;}
+    badanswer {font-size: 20px; font-weight: 400; color: #ff0000;}
+    goodanswer {font-size: 20px; font-weight: 400; color: #00dd00;}
+    char {font-size: 20px; font-weight: 400; color: #0000dd;}
+    timew {font-size: 20px; font-weight: 400; color: #00ddff;}
+    obj {font-size: 20px; font-weight: 400; color: #ff00dd;}
+    tab1 { padding-left: 2em; }
+      textarea {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 16pt!important;
+		 width: 180px!important;
+ 		 height: 45px!important;
       }
       #button-div {
         margin-bottom: 10px;
@@ -40,27 +41,20 @@
   </head>
   <body>
     <div class='container'>
-    <header>Watch the animation and answer the two questions listed below:</header>
-	<br>
-  <ul>
-    <li><answer>Use short and simple, grammatically correct sentences</answer>
-    <li><answer>All characters must be used to answer each question. Use characters names such as <char>Fred</char>, <char>Wilma</char>, <char> Man in a purple dress</char>, etc. exactly as provided.</answer>
-    <li><answer>Use words such as <timew>while</timew>, <timew>then</timew>, <timew>after</timew>, etc to note the order of events.</answer>
-    <li><answer>If characters touch or interact with any objects, such as <obj>car</obj>, <obj>book</obj>, <obj>chair</obj>, etc, they should be mentioned.</answer>
-  </ul>
-    <br>
-    <h4>
-    <a href='https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_3/stage_3_inst.html'>
-      Here's a link to some examples.</a>
-    </h4>
-    <p>&nbsp;<p>
-    </div>
+      <title>Where is this scene taking place?</title>
+      <header>Examples:</header>
+      <header><tab1><i>kitchen , bedroom , living room , park , dining room , playground , classroom , quarry , road , doorway , car , etc. </i></tab></header>
+      <note>Answer the question in 1 to 2 words</note>
+      <h3>
+      <a href='https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_3/stage_3a_inst.html'>
+        Watch examples here</a>
+      </h3>
+    <p>&nbsp;</p>
 
     <div class='container-fluid'>
       <div class='row' style='float: left; width: 50%;'>
         <div class='col-lg-4 text-center'>
           <div class='centerBlock'>
-
           <div id='image-container'>
           </div>
           </div>
@@ -68,21 +62,16 @@
         </div>
       </div>
       <div class='row' style='float: right; width: 50%;'>
-        <div class='col-lg-4 col-lg-offset-1'>
-          <h4>Where are the characters?</h4>
-          <textarea id='setting' class='form-control tb-margin' disabled></textarea>
-          <h4>What happens?</h4>
-          <textarea id='actions' class='form-control tb-margin' disabled></textarea>
+        <div class='col-lg-4 text-center'>
+          <h4>Enter Setting:</h4>
+          <textarea id='setting' class='form-control tb-margin' disabled;></textarea>
           <br>
-        <h4>Make sure to mention this character when answering:</h4>
-        <img id='target_char'
-             src='{{char_img}}'>
-             <h3>{{char_name}}</h3>
+          {% include 'simpleamt.html' %}
          </div>
       </div>
     </div>
     <hr>
-    {% include 'simpleamt.html' %}
+  </div>
 
     <script>
         // Define some default input.
@@ -130,7 +119,6 @@
 
           // Set up the text area
           $('#setting').val(descriptions[0]);
-          $('#actions').val(descriptions[1]);
 
           // Refresh the counter
           <!--$('.counter-top').text(idx + 1);-->
@@ -138,27 +126,7 @@
 
           // If the UI is enabled, enable or disable the buttons depending on
           // the index.
-          if (enabled) {
-            <!--var prev_btn = $('#prev-btn');-->
-            <!--var next_btn = $('#next-btn');-->
-            <!--prev_btn.prop('disabled', true);-->
-            <!--next_btn.prop('disabled', true);-->
-            <!--if (idx > 0) {-->
-              <!--prev_btn.prop('disabled', false);-->
-            <!--}-->
-            <!--if (idx < input.length - 1) next_btn.prop('disabled', false);-->
-          }
         }
-
-        <!--// Update the index, and save the text in the text area.-->
-        <!--function set_idx(new_idx) {-->
-          <!--if (new_idx < 0 || new_idx >= input.length) return;-->
-          <!--descriptions[idx] = $('#characters').val();-->
-          <!--descriptions[idx] = $('#setting').val();-->
-
-          <!--idx = new_idx;-->
-          <!--render();-->
-        <!--}-->
 
         // Enable the UI.
         function enable_hit() {
@@ -168,16 +136,21 @@
           <!--$('#next-btn').click(function() { set_idx(idx + 1) });-->
           <!--$('#prev-btn').click(function() { set_idx(idx - 1) });-->
           $('#setting').prop('disabled', false);
-          $('#actions').prop('disabled', false);
           $('#submit-btn').prop('disabled', false);
 
           // Set up submit handler.
           simpleamt.setupSubmit();
           $('#submit-btn').click(function() {
             descriptions[0] = $('#setting').val();
-            descriptions[1] = $('#actions').val();
-            console.log(descriptions);
-            if (_.any(descriptions, function(d) { return d.length < 0; })) {
+            if (descriptions[0].length < 3) {
+              alert('Description not long enough. Correct before submitting.');
+              return false;
+            }
+            if (descriptions[0].split(" ").length > 2) {
+              alert('Description is too long. Only use two words at most.');
+              return false;
+            }
+            if (_.any(descriptions, function(d) { return d.length < 3; })) {
               alert('Descriptions not long enough. Correct before submitting.');
               return false;
             }
