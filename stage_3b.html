@@ -36,62 +36,161 @@
       img {
         height: 200px;
       }
+      .button {
+        background-color: #ffffff;
+        border: 2;
+        color: black;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        font-size: 16px; font-weight: 400;
+    }
+
+      #rules {
+          border-collapse: collapse;
+          width: 100%;
+      }
+      #rules th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          border: 1px solid #000000;
+          padding: 8px;
+          text-align: center;
+          background-color: #4CAF50;
+          font-size: 20px; font-weight: 400; color: white;
+      }
+      #rules td {
+          border: 1px solid #000000;
+          padding: 8px;
+          font-size: 18px; font-weight: 400; color: black;
+      }
+
+      #examples {
+          border-collapse: collapse;
+          overflow:hidden;
+          table-layout:fixed;
+
+      }
+      #examples td {
+        overflow:hidden;
+
+        table-layout:fixed;
+          border: 2px solid #888888;
+          background-color: #f8f8f8;
+          padding: 8px;
+          width: 300;
+          vertical-align: top;
+          min-width:300px;
+          font-size: 18px; font-weight: 400; color: black;
+      }
     </style>
   </head>
   <body>
-    <div class='container'>
-      <htitle>Where is this scene taking place?</htitle>
-      <header>Examples:</header>
-      <header><tab1><i>kitchen , bedroom , living room , park , dining room , playground , classroom , quarry , road , doorway , car , etc. </i></tab1></header>
-      <note>Answer the question in 1 to 2 words</note>
-      <h3 style="text-align:left;">
-      <a href='https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_3/stage_3a_inst.html' target="_blank">
-        Watch examples here</a>
-        <note><span style="float:right;margin-right: 300px;">Use:</span></note>
+    <htitle>Describe what is happening in the video</htitle>
+    <p></p>
+    <header>5 simple rules to remember</header>
+    <p></p>
+    <table id="rules">
+      <tr align=center>
+        <th>Rule 1</th>
+        <th>Rule 2</th>
+        <th>Rule 3</th>
+        <th>Rule 4</th>
+        <th>Rule 5</th>
+      </tr>
+      <tr valign="top">
+        <td>Use simple, grammatically correct sentences.</td>
+        <td>Use character names that are provided.<br>Eg: <char>Fred</char>, <char>Old man</char>, etc.</td>
+        <td>Use scene name that is provided.<br>Eg: <scene>kitchen</scene>, <scene>bedroom</scene>, etc.</td>
+        <td>Use words to note the order of events.<br>Eg: <timew>while</timew>, <timew>then</timew>, <timew>after</timew>, etc.</td>
+        <td>Use object names if characters touch or interact with any objects.<br>Eg: <obj>car</obj>, <obj>book</obj>, <obj>chair</obj>, etc</td>
+      </tr>
+    </table>
 
-      </h3>
+    <header>Examples</header>
+    <p>
+    <button onclick="myFunction()" class="button">Show / Hide Example videos</button>
+    </p>
+
+    <div id="gifs" style="display:none">
+    <table id="examples gifs">
+      <tr>
+      <td>
+          <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_03_e_06_shot_002330_002404.gif" width="300">
+      </td>
+      <td>
+          <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_06_e_06_shot_002438_002512.gif" width="300">
+      </td>
+      <td>
+          <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_03_e_05_shot_000608_000682.gif" width="300">
+      </td>
+      <td>
+          <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_04_e_06_shot_001199_001273.gif" width="300">
+      </td>
+    </tr>
+    </table>
+  </div>
+
+    <table id="examples">
+      <tr>
+      <td>
+          <char>Wilma</char> is standing in the <scene>kitchen</scene>. She is stirring a <obj>bowl</obj> <timew>while</timew> scrubbing the <obj>floor</obj> with a <obj>mop</obj>.
+      </td>
+      <td>
+          <char>Wilma</char> and <char>Betty</char> are sitting on <obj>couches</obj> in the <scene>living room</scene>. They are talking to each other. <char>Fred</char> drags a <obj>chest</obj> through the room.
+      </td>
+      <td>
+          <char>Fred</char> and a <char>man in a purple dress</char> are on the <scene>road</scene>. The man plays the <obj>guitar</obj> <timew>while</timew> <char>Fred</char> dances.
+      </td>
+      <td>
+          <char>Wilma</char>, <char>Fred</char> and <char>Pebbles</char> are in a <scene>room</scene>.<char>Wilma</char> is carrying <char>Pebbles</char> in her arms. <char>Wilma</char> speaks to <char>Fred</char>. <timew>Then</timew> <char>Fred</char> looks back at her.
+      </td>
+      </tr>
+    </table>
+
+    <script>
+    function myFunction() {
+        var x = document.getElementById('gifs');
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+    }
+    </script>
     <p>&nbsp;</p>
 
     <div class='container-fluid'>
-      <div class='row' style='float: left; width: 50%;'>
-        <div class='col-lg-4 text-center'>
-          <div class='centerBlock'>
-          <div id='image-container'>
-          </div>
-          </div>
+      <note><span style="padding-right: 272px;">Describe:</span></note>
+      <note><span>Use:</span></note>
 
-          <br>
-        </div>
-      </div>
+            <div style="display: table; height: 200px; overflow: auto;">
+                <div style="display: table-cell; vertical-align: middle;">
+                    <div id='image-container' style="padding-right: 100px;"></div>
+                </div>
+                  <div style="display: table-cell; vertical-align: middle;">
 
-      <div class='row' style='float: right; width: 25%;'>
-        <div class='col-lg-4 text-center'>
-          <img id='target_char'
-               src='{{char_img}}'>
-               <h3>{{char_name}}</h3>
-         </div>
-      </div>
+                    <div style="padding-right: 30px;">
+                        <h3>{{setting}}</h3>
+                        </div>
+                  </div>
+                  <div style="display: table-cell; vertical-align: middle;">
+                    <div style="padding-right: 30px;padding-top: 30px;">
+                        <img id='target_char'
+                         src='{{char_img}}'>
+                         <h3>{{char_name}}</h3>
+                       </div>
+                  </div>
 
-      <!-- <div class='row' style='float: right; width: 25%;'>
-        <div class='col-lg-4 text-center'>
-          <img id='target_char'
-               src='{{char_img}}'>
-               <h3>{{char_name}}</h3>
-         </div>
-      </div> -->
-
-      <!-- <div class='row' style='float: right; width: 25%;'>
-        <div class='col-lg-4 text-center'>
-            <h3>Refer to this character:</h3>
-         </div>
-      </div> -->
-
+            </div>
     </div>
     <hr>
     <textarea id='actions' class='form-control tb-margin' disabled></textarea>
     <br>
     {% include 'simpleamt.html' %}
-  </div>
 
     <script>
         // Define some default input.

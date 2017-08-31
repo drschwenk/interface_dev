@@ -1,0 +1,138 @@
+<html>
+<head>
+  <title>Examples of animation descriptions</title>
+  <style>
+  htitle {font-size: 30px; font-weight: 400; color: #555555;}
+  header {font-size: 22px; font-weight: 400; color: #555555;}
+  badheader {font-size: 22px; font-weight: 400; color: #ff0000;}
+  answer {font-size: 20px; font-weight: 400; color: #000000;}
+  tableheader {font-size: 20px; font-weight: 400; color: #444444;}
+  badanswer {font-size: 20px; font-weight: 400; color: #ff0000;}
+  goodanswer {font-size: 20px; font-weight: 400; color: #00dd00;}
+  char {font-weight: 400; color: #0000dd;}
+  scene {font-weight: 400; color: #aa00dd;}
+  timew {font-weight: 400; color: #00ddff;}
+  obj {font-weight: 400; color: #ff00dd;}
+
+  .button {
+    background-color: #ffffff;
+    border: 2;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 16px; font-weight: 400;
+}
+
+  #rules {
+      border-collapse: collapse;
+      width: 100%;
+  }
+  #rules th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      border: 1px solid #000000;
+      padding: 8px;
+      text-align: center;
+      background-color: #4CAF50;
+      font-size: 20px; font-weight: 400; color: white;
+  }
+  #rules td {
+      border: 1px solid #000000;
+      padding: 8px;
+      font-size: 18px; font-weight: 400; color: black;
+  }
+
+  #examples {
+      border-collapse: collapse;
+  }
+  #examples td {
+      border: 2px solid #888888;
+      background-color: #f8f8f8;
+      padding: 8px;
+      width: 300;
+      vertical-align: top;
+      font-size: 18px; font-weight: 400; color: black;
+  }
+
+  </style>
+</head>
+
+<body>
+  <htitle>Describe what is happening in the video</htitle>
+  <p>
+  <header>5 simple rules to remember</header>
+  <p>
+  <table id="rules">
+    <tr align=center>
+      <th>Rule 1</th>
+      <th>Rule 2</th>
+      <th>Rule 3</th>
+      <th>Rule 4</th>
+      <th>Rule 5</th>
+    </tr>
+    <tr valign="top">
+      <td>Use simple, grammatically correct sentences.</td>
+      <td>Use character names that are provided.<br>Eg: <char>Fred</char>, <char>Old man</char>, etc.</td>
+      <td>Use scene name that is provided.<br>Eg: <scene>kitchen</scene>, <scene>bedroom</scene>, etc.</td>
+      <td>Use words to note the order of events.<br>Eg: <timew>while</timew>, <timew>then</timew>, <timew>after</timew>, etc.</td>
+      <td>Use object names if characters touch or interact with any objects.<br>Eg: <obj>car</obj>, <obj>book</obj>, <obj>chair</obj>, etc</td>
+    </tr>
+  </table>
+
+  <header>Examples</header>
+  <p>
+  <button onclick="myFunction()" class="button">Show / Hide Example videos</button>
+  <p>
+
+  <div id="gifs" style="display:none">
+  <table id="examples">
+    <tr>
+    <td>
+        <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_03_e_06_shot_002330_002404.gif" width="300">
+    </td>
+    <td>
+        <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_06_e_06_shot_002438_002512.gif" width="300">
+    </td>
+    <td>
+        <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_03_e_05_shot_000608_000682.gif" width="300">
+    </td>
+    <td>
+        <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_04_e_06_shot_001199_001273.gif" width="300">
+    </td>
+  </tr>
+  </table>
+</div>
+
+  <table id="examples">
+    <tr>
+    <td>
+        <char>Wilma</char> is standing in the <scene>kitchen</scene>. She is stirring a <obj>bowl</obj> <timew>while</timew> scrubbing the <obj>floor</obj> with a <obj>mop</obj>.
+    </td>
+    <td>
+        <char>Wilma</char> and <char>Betty</char> are sitting on <obj>couches</obj> in the <scene>living room</scene>. They are talking to each other. <char>Fred</char> drags a <obj>chest</obj> through the room.
+    </td>
+    <td>
+        <char>Fred</char> and a <char>man in a purple dress</char> are on the <scene>road</scene>. The man</char> plays the <obj>guitar</obj> <timew>while</timew> <char>Fred</char> dances.
+    </td>
+    <td>
+        <char>Wilma</char>, <char>Fred</char> and <char>Pebbles</char> are in a <scene>room</scene>.<char>Wilma</char> is carrying <char>Pebbles</char> in her arms. <char>Wilma</char> speaks to <char>Fred</char>. <timew>Then</timew> <char>Fred</char> looks back at her.
+    </td>
+    </tr>
+  </table>
+
+  <script>
+  function myFunction() {
+      var x = document.getElementById('gifs');
+      if (x.style.display === 'none') {
+          x.style.display = 'block';
+      } else {
+          x.style.display = 'none';
+      }
+  }
+  </script>
+</body>
+</html>
