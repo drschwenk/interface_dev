@@ -75,15 +75,29 @@
 
       }
       #examples td {
-        overflow:hidden;
-
-        table-layout:fixed;
+          overflow:hidden;
           border: 2px solid #888888;
-          background-color: #f8f8f8;
           padding: 8px;
           width: 300;
           vertical-align: top;
           min-width:300px;
+          font-size: 18px; font-weight: 400; color: black;
+      }
+      #material {
+          border-collapse: collapse;
+          overflow:hidden;
+          table-layout:fixed;
+
+      }
+      #material td{
+          overflow:hidden;
+          table-layout:fixed;
+          border: 2px solid #888888;
+          background-color: #f8f8f8;
+          padding: 8px;
+          width: 150;
+          vertical-align: middle;
+          min-width:150px;
           font-size: 18px; font-weight: 400; color: black;
       }
     </style>
@@ -166,25 +180,30 @@
     <div class='container-fluid'>
       <note><span style="padding-right: 272px;">Describe:</span></note>
       <note><span>Use:</span></note>
-
+      <br>
+      <br>
             <div style="display: table; height: 200px; overflow: auto;">
                 <div style="display: table-cell; vertical-align: middle;">
                     <div id='image-container' style="padding-right: 100px;"></div>
                 </div>
-                  <div style="display: table-cell; vertical-align: middle;">
-
-                    <div style="padding-right: 30px;">
-                        <h3>{{setting}}</h3>
-                        </div>
-                  </div>
-                  <div style="display: table-cell; vertical-align: middle;">
-                    <div style="padding-right: 30px;padding-top: 30px;">
+                  <div style="display: table-cell;">
+                    <table id="material">
+                      <tr>
+                        <th>Setting</th>
+                        <th>Character</th>
+                      </tr>
+                      <tr>
+                      <td align="center">
+                        {{setting}}
+                      </td>
+                      <td align="center">
                         <img id='target_char'
-                         src='{{char_img}}'>
-                         <h3>{{char_name}}</h3>
-                       </div>
+                         src='{{char_img}}' style="height:100px;">
+                         {{char_name}}
+                       </td>
+                    </tr>
+                    </table>
                   </div>
-
             </div>
     </div>
     <hr>
