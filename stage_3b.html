@@ -129,26 +129,29 @@
     <button onclick="myFunction()" class="button">Show / Hide Example videos</button>
     </p>
 
-    <div id="gifs" style="display:none">
-    <table id="examples gifs">
-      <tr>
-      <td>
-          <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_03_e_06_shot_002330_002404.gif" width="300">
-      </td>
-      <td>
-          <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_06_e_06_shot_002438_002512.gif" width="300">
-      </td>
-      <td>
-          <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_03_e_05_shot_000608_000682.gif" width="300">
-      </td>
-      <td>
-          <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_04_e_06_shot_001199_001273.gif" width="300">
-      </td>
-    </tr>
-    </table>
-  </div>
-
     <table id="examples">
+      <tr>
+        <td>
+          <div id="gifs1" style="display:none">
+              <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_03_e_06_shot_002330_002404.gif" width="300">
+            </div>
+        </td>
+        <td>
+          <div id="gifs2" style="display:none">
+            <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_06_e_06_shot_002438_002512.gif" width="300">
+          </div>
+        </td>
+        <td>
+          <div id="gifs3" style="display:none">
+            <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_03_e_05_shot_000608_000682.gif" width="300">
+          </div>
+        </td>
+        <td>
+          <div id="gifs4" style="display:none">
+            <img src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/scene_gifs/s_04_e_06_shot_001199_001273.gif" width="300">
+          </div>
+        </td>
+      </tr>
       <tr>
       <td>
           <char>Wilma</char> is standing in the <scene>kitchen</scene>. She is stirring a <obj>bowl</obj> <timew>while</timew> scrubbing the <obj>floor</obj> with a <obj>mop</obj>.
@@ -163,11 +166,29 @@
           <char>Wilma</char>, <char>Fred</char> and <char>Pebbles</char> are in a <scene>room</scene>.<char>Wilma</char> is carrying <char>Pebbles</char> in her arms. <char>Wilma</char> speaks to <char>Fred</char>. <timew>Then</timew> <char>Fred</char> looks back at her.
       </td>
       </tr>
-    </table>
+    </table>>
 
     <script>
     function myFunction() {
-        var x = document.getElementById('gifs');
+        var x = document.getElementById('gifs1');
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+        var x = document.getElementById('gifs2');
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+        var x = document.getElementById('gifs3');
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+        var x = document.getElementById('gifs4');
         if (x.style.display === 'none') {
             x.style.display = 'block';
         } else {
@@ -256,7 +277,7 @@
           $('<img>').attr('src', input[idx]).appendTo($('#image-container'));
 
           // Set up the text area
-          $('#setting').val(descriptions[0]);
+          $('#actions').val(descriptions[0]);
 
           // Refresh the counter
           <!--$('.counter-top').text(idx + 1);-->
@@ -273,25 +294,17 @@
           // Enable components
           <!--$('#next-btn').click(function() { set_idx(idx + 1) });-->
           <!--$('#prev-btn').click(function() { set_idx(idx - 1) });-->
-          $('#setting').prop('disabled', false);
+          $('#actions').prop('disabled', false);
           $('#submit-btn').prop('disabled', false);
 
           // Set up submit handler.
           simpleamt.setupSubmit();
           $('#submit-btn').click(function() {
-            descriptions[0] = $('#setting').val();
-            if (descriptions[0].length < 3) {
-              alert('Description not long enough. Correct before submitting.');
-              return false;
-            }
-            if (descriptions[0].split(" ").length > 2) {
-              alert('Description is too long. Only use two words at most.');
-              return false;
-            }
-            if (_.any(descriptions, function(d) { return d.length < 3; })) {
-              alert('Descriptions not long enough. Correct before submitting.');
-              return false;
-            }
+            descriptions[0] = $('#actions').val();
+            // if (descriptions[0].split(" ").length < 3) {
+            //   alert('Description not long enough. Correct before submitting.');
+            //   return false;
+            // }
             var output = _.map(_.zip(input, descriptions), function(x) {
               return {'image_url': x[0], 'description': x[1]};
             });
