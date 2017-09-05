@@ -166,7 +166,7 @@
           <char>Wilma</char>, <char>Fred</char> and <char>Pebbles</char> are in a <scene>room</scene>.<char>Wilma</char> is carrying <char>Pebbles</char> in her arms. <char>Wilma</char> speaks to <char>Fred</char>. <timew>Then</timew> <char>Fred</char> looks back at her.
       </td>
       </tr>
-    </table>>
+    </table>
 
     <script>
     function myFunction() {
@@ -217,11 +217,13 @@
                       <td align="center">
                         {{setting}}
                       </td>
-                      <td align="center">
-                        <img id='target_char'
-                         src='{{char_img}}' style="height:100px;">
-                         {{char_name}}
-                       </td>
+                      {% for char_img in char_images %}
+                        <td align="center">
+                          <img id='target_char'
+                           src='{{char_img.0}}' style="height:100px;">
+                           {{char_img.1}}
+                         </td>
+                         {% endfor %}
                     </tr>
                     </table>
                   </div>
