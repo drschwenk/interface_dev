@@ -1,0 +1,173 @@
+<html>
+<head>
+<title>Character Annotation</title>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
+<script type='text/javascript' src='https://s3.amazonaws.com/mturk-public/externalHIT_v1.js'></script>
+<script src="https://s3-us-west-2.amazonaws.com/ai2-vision-animation-gan/annotation_data/interface_elems/bbox_annotator.js"></script>
+</head>
+<body>
+
+<h4>
+The goal of this task is to locate and localize a certain object in an images.
+</h4>
+<ul>
+  <li>Draw a box around the <b>phone</b></li>
+
+</ul>
+<p>
+Here are two examples of the task:
+<a href="https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_1/example_mains.gif">
+  ...
+</a>
+<br>
+<a href="https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_1/example_only_min.gif">
+  has a good label...
+</a>
+<br>
+<a href="https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_1/example_minors.gif">
+  ...
+</a>
+<br>
+</p>
+<br>
+<div id="bbox_annotator" style="display:inline-block"></div>
+<div style="display:inline-block;vertical-align:top;">
+  <!-- <div>
+    <textarea id="annotation_data" name="annotation" rows="30" cols="50" style="font-family:monospace;" readonly></textarea>
+  </div> -->
+  <script type='text/json' id='input'>
+</script>
+  <div>
+    <input id="annotation_data_mains" name="annotation_data_mains" type="hidden" />
+    <br>
+    <input id="annotation_data_others" name="annotation_data_others" type="hidden" />
+
+    <br>
+    <!-- <input id="reset_button" type="reset" /> -->
+    <form id='results-form' method='post' action='dummy' class='text-center'>
+      <input type='hidden' value='' name='assignmentId' id='assignmentId'/>
+      <input type='hidden' value='' name='output' id='output'/>
+      <br>
+      <input type='submit' class='btn btn-lg btn-success' id='submit-btn' value='Submit' disabled/>
+    </form>
+  </div>
+</div>
+
+
+<script>
+var simpleamt = (function() {
+
+  // Copied from http://james.padolsey.com/javascript/bujs-1-getparameterbyname/
+  function getUrlParam(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : null;
+  }
+
+  function getInput(default_input) {
+    if (typeof(default_input) === 'undefined') default_input = null;
+    try {
+      return JSON.parse($('#input').html());
+    } catch (e) {
+      return default_input;
+    }
+  }
+
+  function setOutput(output) {
+    $('#output').val(JSON.stringify(output));
+  }
+
+  function isPreview() {
+    var assignment_id = getUrlParam('assignmentId');
+    if (assignment_id === null) return false;
+    return assignment_id == 'ASSIGNMENT_ID_NOT_AVAILABLE';
+  }
+
+  function setupSubmit() {
+    var submit_to = getUrlParam('turkSubmitTo');
+    $('#results-form').attr('action', submit_to + '/mturk/externalSubmit');
+    $('#assignmentId').val(getUrlParam('assignmentId'));
+  }
+
+  return {
+    getInput: getInput,
+    setOutput: setOutput,
+    isPreview: isPreview,
+    setupSubmit: setupSubmit,
+  }
+
+})();
+</script>
+
+<script type="text/javascript">
+function getParameterByName(name) {
+  var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+$(document).ready(function() {
+  var inputMethod = getParameterByName("input");
+  var assignment_id = turkGetParam('assignmentId', "");
+  var image_url =  "{{s3_uri_base}}{{image_id}}";
+  var image_id = "{{image_id}}";
+  // var image_url =  "example.jpg";
+  // Initialize the bounding-box annotator.
+  var annotator = new BBoxAnnotator({
+    url: image_url,
+    frame: 'image_frame_1',
+    // input_method: inputMethod || "select",
+    input_method: "text",
+    // input_method: "select",
+    labels: ["Fred",
+             "Barney",
+              "Wilma",
+              "Betty",
+              "Pebbles",
+              "Bamm Bamm",
+              "Dino",
+              "Mr Slate",
+              "Baby Puss",
+              "Hoppy",
+              "Empty Frame"
+              ],
+    onchange: function(entries) {
+      if (entries.length > 0 &&
+          assignment_id != "" &&
+          assignment_id != "ASSIGNMENT_ID_NOT_AVAILABLE") {
+          $('#submit-btn').prop('disabled', false);
+      }
+      else {
+        $("#submitButton").attr("disabled", "disabled");
+
+      }
+      // Input the text area on change. Use "hidden" input tag unless debugging.
+      // <input id="annotation_data" name="annotation_data" type="hidden" />
+      $("#annotation_data_mains").val(JSON.stringify(entries))
+    }
+  });
+  // Initialize the reset button.
+  $("#reset_button").click(function(e) {
+    annotator.clear_all();
+  })
+
+  $("#submitButton").attr("disabled", "disabled");
+  simpleamt.setupSubmit();
+  $('#submit-btn').click(function() {
+    try {
+      var combined_annotations = JSON.parse($('#annotation_data_mains').val());
+    }
+      catch(e) {
+        var combined_annotations = JSON.parse($('#annotation_data_mains').val());
+    }
+    simpleamt.setOutput({'stillID': image_id, 'characterBoxes': JSON.stringify(combined_annotations)});
+  });
+
+});
+</script>
+
+</body>
+</html>

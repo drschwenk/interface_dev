@@ -298,11 +298,30 @@
           <!--$('#prev-btn').click(function() { set_idx(idx - 1) });-->
           $('#actions').prop('disabled', false);
           $('#submit-btn').prop('disabled', false);
+          var strings_to_match = '{{strings_to_match|safe}}';
+          strings_to_match = strings_to_match.split('string_join_token');
 
           // Set up submit handler.
           simpleamt.setupSubmit();
           $('#submit-btn').click(function() {
             descriptions[0] = $('#actions').val();
+            var setting_descriptions = ['{{setting}}'];
+            n_to_match = strings_to_match.length;
+            var not_matched = [];
+            for(var i =0;i < n_to_match; i++){
+                if(descriptions[0].toLowerCase().includes(strings_to_match[i].toLowerCase())){
+
+                }
+                else{
+                  not_matched.push(strings_to_match[i])
+                }
+            }
+            if(not_matched.length > 0){
+                alert('Make sure your description mentions: ' + not_matched.join(', '));
+                  return false;
+
+            }
+
             // if (descriptions[0].split(" ").length < 3) {
             //   alert('Description not long enough. Correct before submitting.');
             //   return false;
@@ -310,7 +329,6 @@
             var output = _.map(_.zip(input, descriptions), function(x) {
               return {'image_url': x[0], 'description': x[1]};
             });
-            console.log(output);
             simpleamt.setOutput(output);
           });
         }

@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js'></script>
+    <!-- end of required libraries -->
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet'>
+    <style>
+    htitle {font-size: 25px; font-weight: 400; color: #dd0000;}
+    header {font-size: 22px; font-weight: 400; color: #555555;}
+    note {font-size: 22px; font-weight: 400; color: #dd0000;}
+    answer {font-size: 20px; font-weight: 400; color: #000000;}
+    badanswer {font-size: 20px; font-weight: 400; color: #ff0000;}
+    goodanswer {font-size: 20px; font-weight: 400; color: #00dd00;}
+    char {font-size: 20px; font-weight: 400; color: #0000dd;}
+    timew {font-size: 20px; font-weight: 400; color: #00ddff;}
+    obj {font-size: 20px; font-weight: 400; color: #ff00dd;}
+    tab1 { padding-left: 2em; }
+      textarea {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 16pt!important;
+		 width: 180px!important;
+ 		 height: 45px!important;
+      }
+      #button-div {
+        margin-bottom: 10px;
+      }
+      #counter {
+        margin: 0 10px;
+        font-size: 20pt;
+        font-weight: bold;
+      }
+      img {
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <htitle>Click on the objects in a paragraph.</htitle>
+      <header>Examples:</header>
+      <a href='https://s3-us-west-2.amazonaws.com//ai2-vision-animation-gan/annotation_data/interface_elems/instructions_stage_3/stage_3a_inst.html' target="_blank">
+        See examples here</a>
+      </h3>
+    <p>&nbsp;</p>
+    <script type="text/javascript">
+    function record_value(clicked_word){
+      console.log(clicked_word);
+    }
+    var desc_text = "Fred is leaning up against his car. He looks very tired, his shoulders are shrugged, he says something and then lets his shoulders down. Then he looks away."
+    var buttons = [['Fred', 'is', 'leaning', 'up', 'against', 'his', 'car'],
+               ['He',
+                'looks',
+                'very',
+                'tired,',
+                'his',
+                'shoulders',
+                'are',
+                'shrugged,',
+                'he',
+                'says',
+                'something',
+                'and',
+                'then',
+                'lets',
+                'his',
+                'shoulders',
+                'down'],
+               ['Then', 'he', 'looks', 'away']]
+      for(var i = 0; i < buttons.length; i++)
+      {
+          document.write("<div>");
+          for(var j = 0; j < buttons[i].length; j++)
+          {
+             document.write("<input type='button' onclick=record_value('" + buttons[i][j] + "') value='" + buttons[i][j] + "'/>");
+          }
+          document.write("</div>");
+      }
+      function enable_hit() {
+        enabled = true;
+
+        // Enable components
+        <!--$('#next-btn').click(function() { set_idx(idx + 1) });-->
+        <!--$('#prev-btn').click(function() { set_idx(idx - 1) });-->
+        $('#setting').prop('disabled', false);
+        $('#submit-btn').prop('disabled', false);
+
+        // Set up submit handler.
+        simpleamt.setupSubmit();
+        $('#submit-btn').click(function() {
+          descriptions[0] = $('#setting').val();
+          if (descriptions[0].length < 3) {
+            alert('Description not long enough. Correct before submitting.');
+            return false;
+          }
+          if (descriptions[0].split(" ").length > 2) {
+            alert('Description is too long. Only use two words at most.');
+            return false;
+          }
+          if (_.any(descriptions, function(d) { return d.length < 3; })) {
+            alert('Descriptions not long enough. Correct before submitting.');
+            return false;
+          }
+          var output = _.map(_.zip(input, descriptions), function(x) {
+            return {'image_url': x[0], 'description': x[1]};
+          });
+          console.log(output);
+          simpleamt.setOutput(output);
+        });
+      }
+      </script>
+    <div class='container-fluid'>
+      <div class='row' style='float: left; width: 50%;'>
+        <div class='col-lg-4 text-center'>
+          <div class='centerBlock'>
+            {% include 'simpleamt.html' %}
+
+          <br>
+        </div>
+      </div>
+  </body>
+</html>
